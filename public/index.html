@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatMinds - AI Chat with PDF Support</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- AOS Animation Library -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div class="loading-screen">
+    <div class="loading-animation">
+      <div class="loading-logo">
+        <i class="fas fa-brain"></i>
+      </div>
+      <div class="loading-text">ChatMinds</div>
+      <div class="loading-spinner"></div>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar" data-aos="fade-right">
+      <div class="sidebar-header">
+        <div class="logo">
+          <i class="fas fa-brain"></i>
+          <h1>ChatMinds</h1>
+        </div>
+        <button class="mobile-close-btn" id="closeSidebar">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="sidebar-content">
+        <div class="sidebar-section">
+          <div class="section-header">
+            <h3>Chat</h3>
+            <button class="new-chat-btn" id="newChatBtn">
+              <i class="fas fa-plus"></i> New Chat
+            </button>
+          </div>
+          <div class="conversation-list" id="conversationList">
+            <!-- Conversations will be added here dynamically -->
+          </div>
+        </div>
+        
+        <div class="sidebar-section">
+          <div class="section-header">
+            <h3>PDFs</h3>
+            <button class="upload-pdf-btn" id="uploadPdfBtn">
+              <i class="fas fa-file-upload"></i> Upload
+            </button>
+          </div>
+          <div class="pdf-list" id="pdfList">
+            <!-- PDFs will be added here dynamically -->
+          </div>
+        </div>
+      </div>
+      
+      <div class="sidebar-footer">
+        <p>Powered by Google Gemini</p>
+      </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Mobile Header -->
+      <div class="mobile-header">
+        <button class="mobile-menu-btn" id="openSidebar">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="mobile-logo">ChatMinds</div>
+      </div>
+      
+      <!-- Welcome Screen -->
+      <div class="welcome-screen" id="welcomeScreen" data-aos="fade-up">
+        <div class="welcome-icon">
+          <i class="fas fa-robot"></i>
+        </div>
+        <h2>Welcome to ChatMinds</h2>
+        <p>Start a new conversation or upload a PDF to chat with it.</p>
+        <div class="welcome-buttons">
+          <button class="welcome-btn" id="welcomeNewChatBtn">
+            <i class="fas fa-comment"></i> New Chat
+          </button>
+          <button class="welcome-btn" id="welcomeUploadPdfBtn">
+            <i class="fas fa-file-pdf"></i> Upload PDF
+          </button>
+        </div>
+      </div>
+      
+      <!-- Chat Interface -->
+      <div class="chat-interface hidden" id="chatInterface">
+        <div class="chat-header" id="chatHeader">
+          <h2>New Conversation</h2>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+          <!-- Messages will be added here dynamically -->
+        </div>
+        
+        <div class="chat-input-container">
+          <form id="chatForm">
+            <div class="chat-input-wrapper">
+              <textarea 
+                id="messageInput" 
+                placeholder="Type your message here..." 
+                rows="1"
+                autofocus
+              ></textarea>
+              <button type="submit" class="send-btn">
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      <!-- PDF Viewer -->
+      <div class="pdf-viewer hidden" id="pdfViewer">
+        <div class="pdf-viewer-header">
+          <h2 id="pdfTitle">PDF Title</h2>
+          <div class="pdf-viewer-controls">
+            <button id="closePdfBtn" class="close-pdf-btn">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="pdf-content-container">
+          <div class="pdf-container">
+            <iframe id="pdfFrame" src="" frameborder="0"></iframe>
+          </div>
+          
+          <div class="pdf-chat-container">
+            <div class="pdf-chat-messages" id="pdfChatMessages">
+              <!-- PDF chat messages will be added here dynamically -->
+            </div>
+            
+            <div class="pdf-chat-input-container">
+              <form id="pdfChatForm">
+                <div class="chat-input-wrapper">
+                  <textarea 
+                    id="pdfMessageInput" 
+                    placeholder="Ask questions about this PDF..." 
+                    rows="1"
+                  ></textarea>
+                  <button type="submit" class="send-btn">
+                    <i class="fas fa-paper-plane"></i>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <!-- Upload PDF Modal -->
+  <div class="modal" id="uploadPdfModal">
+    <div class="modal-content" data-aos="zoom-in">
+      <div class="modal-header">
+        <h3>Upload PDF</h3>
+        <button class="close-modal-btn" id="closeUploadModalBtn">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="uploadPdfForm">
+          <div class="file-upload-container">
+            <div class="file-upload-area" id="dropArea">
+              <i class="fas fa-file-pdf"></i>
+              <p>Drag & Drop your PDF here or click to browse</p>
+              <input type="file" id="pdfFileInput" accept=".pdf" hidden>
+              <button type="button" class="browse-btn" id="browseBtn">Browse Files</button>
+            </div>
+            <div class="selected-file" id="selectedFile">
+              <p>No file selected</p>
+            </div>
+          </div>
+          <div class="upload-actions">
+            <button type="submit" class="upload-btn" id="submitUploadBtn" disabled>
+              Upload PDF
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Toast Notifications -->
+  <div class="toast-container" id="toastContainer">
+    <!-- Toasts will be added here dynamically -->
+  </div>
+  
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html> 
